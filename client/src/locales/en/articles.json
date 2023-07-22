@@ -1,0 +1,39 @@
+{
+  "relatedArticles": "Related articles",
+  "readWholeArticle": "Read whole article",
+  "commentsCount": "{{comments}} comments",
+  "comments": {
+    "title":  "Comments",
+    "NewCommentPlaceholder": "Join the discussion",
+    "hourAgo": "1 hour ago",
+    "hoursAgo": "{{hours}} hours ago",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{days}} days ago",
+    "weeksAgo": "{{weeks}} weeks ago",
+    "monthsAgo": "{{months}} months ago",
+    "yearsAgo": "{{years}} years ago",
+    "upvote": "Upvote",
+    "downvote": "Downvote"
+  },
+  "myArticles": {
+    "title": "My Articles",
+    "publishArticle": "Publish Article",
+    "articleTitle": "Article title",
+    "perex": "Perex",
+    "author": "Author",
+    "commentsCount": "# of comments",
+    "actions": "Actions"
+  },
+  "createNewArticle": "Create new article",
+  "editArticle": "Edit article",
+  "titlePlaceholder": "My First Article",
+  "featuredImage": "Featured image",
+  "uploadImage": "Upload an Image",
+  "uploadNew": "Upload new",
+  "delete": "Delete",
+  "edit": "Edit",
+  "content": "Content",
+  "contentPlaceholder": "Supports markdown. Yay!",
+  "articleTitlePlaceholder": "My First Article"
+
+}

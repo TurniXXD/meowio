@@ -1,2 +1,11 @@
 # meowio
-run `git push -u origin master` after everything is done
+
+## Project
+
+- App is running on [meowio.vantuch.dev](meowio.vantuch.dev)
+
+## Project planning
+
+DO.com/images/lg/xycxcvx-xcvxcvxcv-xcvxvsxdsfv.png
+
+upload image save uuid, return uuid upon record creation, upload to DO

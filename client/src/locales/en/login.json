@@ -1,0 +1,7 @@
+{
+  "emailPlaceholder": "me@example.com",
+  "passwordPlaceholder": "**********",
+  "errors": {
+    "emailAlreadExists": "Email already exists"
+  }
+}
