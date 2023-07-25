@@ -1,29 +1,69 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import styles from "./nav.module.scss";
+import { NavLink } from 'react-router-dom';
+import styles from './nav.module.scss';
+import globalStyles from '../../styles/global.module.scss';
+import { useAuth } from '../../auth';
 
 const Nav = () => {
   const { t } = useTranslation('common');
-
-  let isLoggedIn = true;
+  const { authCookie: isLoggedIn } = useAuth();
 
   return (
-    <nav className={styles.nav}>
-      <div>
-        <Link to="/">
+    <nav className={`${styles.nav} ${globalStyles.container}`}>
+      <div className={globalStyles.row}>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
+        >
           <img src="logo.png" alt="Meowio" height={50} width={50} />
-        </Link>
-        <Link to="/articles">{t('recentArticles')}</Link>
-        <Link to="/">{t('about')}</Link>
+        </NavLink>
+        <NavLink
+          to="/articles"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
+        >
+          {t('recentArticles')}
+        </NavLink>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
+        >
+          {t('about')}
+        </NavLink>
       </div>
-
-      {isLoggedIn ? (
+      {!!isLoggedIn ? (
         <div>
-          <Link to="/my-articles">{t('myArticles')}</Link>
-          <Link to="/create-article">{t('createArticle')}</Link>
+          <NavLink
+            to="/my-articles"
+            className={({ isActive }) =>
+              isActive ? styles.active : styles.inactive
+            }
+          >
+            {t('myArticles')}
+          </NavLink>
+          <NavLink
+            to="/create-article"
+            className={({ isActive }) =>
+              isActive ? styles.active : styles.inactive
+            }
+          >
+            {t('createArticle')}
+          </NavLink>
         </div>
       ) : (
-        <Link to="/login">{t('login')}</Link>
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? styles.active : styles.inactive
+          }
+        >
+          {t('login')}
+        </NavLink>
       )}
     </nav>
   );

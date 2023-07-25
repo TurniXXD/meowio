@@ -28,10 +28,6 @@
   "editArticle": "Edit article",
   "titlePlaceholder": "My First Article",
   "featuredImage": "Featured image",
-  "uploadImage": "Upload an Image",
-  "uploadNew": "Upload new",
-  "delete": "Delete",
-  "edit": "Edit",
   "content": "Content",
   "contentPlaceholder": "Supports markdown. Yay!",
   "articleTitlePlaceholder": "My First Article"

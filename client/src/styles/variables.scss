@@ -1,7 +1,43 @@
 $bg: #FFFFFF;
 $bgGray: #F8F9FA;
 $text: #212529;
+$textSecondary: #6C757D;
 $gray: #6C757D;
-$lightGray: #6C757D;
 $blue: #007BFF;
 $red: #DC3545;
+
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1280px;
+$xxl: 1506px;
+
+@mixin screen-sm {
+  @media (min-width: $sm) {
+    @content;
+  }
+}
+
+@mixin screen-md {
+  @media (min-width: $md) {
+    @content;
+  }
+}
+
+@mixin screen-lg {
+  @media (min-width: $lg) {
+    @content;
+  }
+}
+
+@mixin screen-xl {
+  @media (min-width: $xl) {
+    @content;
+  }
+}
+
+@mixin screen-xxl {
+  @media (min-width: $xxl) {
+    @content;
+  }
+}

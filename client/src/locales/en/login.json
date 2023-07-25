@@ -2,6 +2,9 @@
   "emailPlaceholder": "me@example.com",
   "passwordPlaceholder": "**********",
   "errors": {
-    "emailAlreadExists": "Email already exists"
+    "emailAlreadyExists": "Email already exists",
+    "emailInvalid": "Invalid email address",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required"
   }
 }

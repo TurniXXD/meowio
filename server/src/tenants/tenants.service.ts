@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
+import { Tenant } from './entities/tenant.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTenantDto } from './dto/create-tenant.dto';
-import { UpdateTenantDto } from './dto/update-tenant.dto';
+import { User } from '@users/entities/user.entity';
+import { getRandomAvatar } from '@utils/index';
+import { hashPassword } from '@auth/auth.utils';
 
 @Injectable()
 export class TenantsService {
-  create(createTenantDto: CreateTenantDto) {
-    return 'This action adds a new tenant';
+  constructor(
+    @InjectRepository(Tenant)
+    private readonly tenantsRepository: Repository<Tenant>,
+    private readonly entityManager: EntityManager,
+  ) {}
+
+  async create(createTenantDto: CreateTenantDto) {
+    const { password, ...createTenantDtoRest } = createTenantDto;
+    if (await this.tenantsRepository.findOneBy(createTenantDtoRest)) {
+      return `Tenant with username ${createTenantDto.name} already exists`;
+    }
+
+    const passwordHash = await hashPassword(password);
+
+    const user = new User({
+      username: createTenantDtoRest.name,
+      password: passwordHash,
+      avatar_id: getRandomAvatar(),
+    });
+    const userCreated = await this.entityManager.save(user);
+
+    const tenant = new Tenant({
+      ...createTenantDtoRest,
+      password: passwordHash,
+      user_id: userCreated.id,
+    });
+
+    const tenantCreated = await this.entityManager.save(tenant);
+
+    return {
+      tenantId: tenantCreated.id,
+      apiKey: tenantCreated.api_key,
+      name: tenantCreated.name,
+      createdAt: tenantCreated.created_at,
+      lastUsedAt: tenantCreated.updated_at,
+    };
   }
 
   findAll() {
-    return `This action returns all tenants`;
+    return `This action returns tenants`;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} tenant`;
-  }
-
-  update(id: number, updateTenantDto: UpdateTenantDto) {
-    return `This action updates a #${id} tenant`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tenant`;
   }
 }

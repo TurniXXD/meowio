@@ -4,6 +4,10 @@
   "createArticle": "Create Article",
   "about": "About",
   "login": "Log In",
-  "Email": "Email",
-  "Password": "Password"
+  "email": "Email",
+  "password": "Password",
+  "uploadImage": "Upload an Image",
+  "uploadNew": "Upload new",
+  "delete": "Delete",
+  "edit": "Edit"
 }

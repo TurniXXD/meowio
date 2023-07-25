@@ -12,6 +12,11 @@
     "baseUrl": "./",
     "paths": {
       "@tenants/*": ["src/tenants/*"],
+      "@auth/*": ["src/auth/*"],
+      "@middleware/*": ["src/middleware/*"],
+      "@guards/*": ["src/guards/*"],
+      "@utils/*": ["src/utils/*"],
+      "@users/*": ["src/users/*"],
       "@comments/*": ["src/comments/*"],
       "@articles/*": ["src/articles/*"],
       "@database/*": ["src/database/*"]

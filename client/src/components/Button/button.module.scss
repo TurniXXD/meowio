@@ -1,0 +1,13 @@
+@use '../../styles/variables' as *;
+
+.button {
+  border-radius: 0.1rem;
+}
+
+.primary {
+  background-color: $blue;
+}
+
+.upload {
+  background-color: $bgGray;
+}

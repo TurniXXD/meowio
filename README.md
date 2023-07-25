@@ -1,10 +1,6 @@
-# meowio
+# Meowio blogging engine
 
-## Project
-
-- App is running on [meowio.vantuch.dev](meowio.vantuch.dev)
-
-## Project planning
+## Project roadmap
 
 1. Visualize project in whimsical
 2. Visualize database structure
@@ -14,3 +10,7 @@
 6. Setup i18n
 7. Create basic types with type orm
 8. Connect to DB and synchronize
+9. Create API routes
+10. Setup authorization on server
+11. Setup swagger
+12. Setup client - server authorization

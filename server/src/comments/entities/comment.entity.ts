@@ -4,26 +4,27 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { BaseEntity } from '@database/base.entity';
 import { Article } from '@articles/entities/article.entity';
-import { Tenant } from '@tenants/entities/tenant.entity';
+import { User } from '@users/entities/user.entity';
 
 @Entity()
 export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @ManyToOne(() => Article, (article) => article.id)
   @JoinColumn({ name: 'article_id' })
   article_id: string;
 
-  @ManyToOne(() => Tenant, (tenant) => tenant.id)
+  @OneToOne(() => User, (user) => user.id)
   @JoinColumn({ name: 'author_id' })
   author_id: string;
 
   @Column()
-  title: string;
+  content: string;
 
   @Column({ default: 0 })
   score: number;

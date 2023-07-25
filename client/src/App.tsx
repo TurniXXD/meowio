@@ -1,27 +1,71 @@
 import './App.scss';
+import styles from './styles/global.module.scss';
 import { Routes, Route } from 'react-router-dom';
 import About from './pages/About';
 import Articles from './pages/Articles';
-import LogIn from './pages/LogIn';
+import Login from './pages/Login';
 import CreateArticle from './pages/CreateArticle';
 import MyArticles from './pages/MyArticles';
 import EditArticle from './pages/EditArticle';
 import Article from './pages/Article';
 import Nav from './components/Nav';
+import { ProtectedRoute } from './auth';
+import { initAxiosInstance } from './api/config'
+import { EnumCookies, useCookie } from './auth/cookies';
 
 const App = () => {
+  const [authCookie] = useCookie(EnumCookies.Auth, '');
+  initAxiosInstance(authCookie && authCookie)
+
   return (
     <>
       <Nav />
-      <Routes>
-        <Route path="/" element={<About />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/articles/:articleId" element={<Article />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/create-article" element={<CreateArticle />} />
-        <Route path="/edit-article" element={<EditArticle />} />
-        <Route path="/my-articles" element={<MyArticles />} />
-      </Routes>
+      <div className={styles.container}>
+        <Routes>
+          <Route path="/" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/articles"
+            element={
+              <ProtectedRoute>
+                <Articles />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/articles/:articleId"
+            element={
+              <ProtectedRoute>
+                <Article />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-article"
+            element={
+              <ProtectedRoute>
+                <CreateArticle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-article"
+            element={
+              <ProtectedRoute>
+                <EditArticle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-articles"
+            element={
+              <ProtectedRoute>
+                <MyArticles />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
     </>
   );
 };
