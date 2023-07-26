@@ -1,6 +1,5 @@
 import {
   Controller,
-  Get,
   Post,
   Param,
   Delete,
@@ -11,20 +10,20 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 import { ImagesService } from './images.service';
-import { AuthGuard } from '@auth/auth.guard';
+import { OwnerTokenAuthGuard } from '@auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 import { swagger } from '@utils/constants';
 import { UploadImageDto } from './dto/upload-image.dto';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { uid } from '@utils/index';
+import { genShortUUID } from '@utils/index';
 
 @Controller('images')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(OwnerTokenAuthGuard)
   @Post()
   @ApiResponse({
     status: 201,
@@ -56,7 +55,7 @@ export class ImagesController {
           callback(null, uploadPath);
         },
         filename: (_, file, callback) => {
-          const uniqueFileName = uid() + extname(file.originalname);
+          const uniqueFileName = genShortUUID() + extname(file.originalname);
           callback(null, uniqueFileName);
         },
       }),
@@ -77,7 +76,7 @@ export class ImagesController {
     };
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(OwnerTokenAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.imagesService.remove(+id);

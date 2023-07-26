@@ -7,6 +7,10 @@ import { AuthModule } from '@auth/auth.module';
 import { Tenant } from '@tenants/entities/tenant.entity';
 import { MiddlewareModule } from '@middleware/middleware.module';
 import { MiddlewareService } from '@middleware/middleware.service';
+import { ArticlesResolver } from './articles.resolver';
+import { AuthService } from '@auth/auth.service';
+import { User } from '@users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -14,8 +18,15 @@ import { MiddlewareService } from '@middleware/middleware.service';
     MiddlewareModule,
     TypeOrmModule.forFeature([Article]),
     TypeOrmModule.forFeature([Tenant]),
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService, MiddlewareService],
+  providers: [
+    ArticlesService,
+    MiddlewareService,
+    ArticlesResolver,
+    AuthService,
+    JwtService,
+  ],
 })
 export class ArticlesModule {}

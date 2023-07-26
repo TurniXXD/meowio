@@ -43,7 +43,7 @@ const App = () => {
           <Route
             path="/create-article"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute ownerProtected>
                 <CreateArticle />
               </ProtectedRoute>
             }
@@ -51,7 +51,7 @@ const App = () => {
           <Route
             path="/edit-article"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute ownerProtected>
                 <EditArticle />
               </ProtectedRoute>
             }
@@ -59,7 +59,7 @@ const App = () => {
           <Route
             path="/my-articles"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute ownerProtected>
                 <MyArticles />
               </ProtectedRoute>
             }

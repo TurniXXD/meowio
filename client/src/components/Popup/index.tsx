@@ -19,7 +19,7 @@ export default function Popup({ children, className, text, type }: PopupProps) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVisible(false);
-    }, 5000); // Disappear after 5 seconds
+    }, 3000); // Disappear after 3 seconds
 
     // Clear the timeout and hide the popup if it's unmounted before the timeout is reached
     return () => {

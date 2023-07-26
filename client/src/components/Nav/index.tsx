@@ -6,7 +6,7 @@ import { useAuth } from '../../auth';
 
 const Nav = () => {
   const { t } = useTranslation('common');
-  const { authCookie: isLoggedIn } = useAuth();
+  const { authCookie: isLoggedIn, isOwner } = useAuth();
 
   return (
     <nav className={`${styles.nav} ${globalStyles.container}`}>
@@ -19,14 +19,16 @@ const Nav = () => {
         >
           <img src="logo.png" alt="Meowio" height={50} width={50} />
         </NavLink>
-        <NavLink
-          to="/articles"
-          className={({ isActive }) =>
-            isActive ? styles.active : styles.inactive
-          }
-        >
-          {t('recentArticles')}
-        </NavLink>
+        {!!isLoggedIn && (
+          <NavLink
+            to="/articles"
+            className={({ isActive }) =>
+              isActive ? styles.active : styles.inactive
+            }
+          >
+            {t('recentArticles')}
+          </NavLink>
+        )}
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -37,24 +39,26 @@ const Nav = () => {
         </NavLink>
       </div>
       {!!isLoggedIn ? (
-        <div>
-          <NavLink
-            to="/my-articles"
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            {t('myArticles')}
-          </NavLink>
-          <NavLink
-            to="/create-article"
-            className={({ isActive }) =>
-              isActive ? styles.active : styles.inactive
-            }
-          >
-            {t('createArticle')}
-          </NavLink>
-        </div>
+        isOwner() && (
+          <div>
+            <NavLink
+              to="/my-articles"
+              className={({ isActive }) =>
+                isActive ? styles.active : styles.inactive
+              }
+            >
+              {t('myArticles')}
+            </NavLink>
+            <NavLink
+              to="/create-article"
+              className={({ isActive }) =>
+                isActive ? styles.active : styles.inactive
+              }
+            >
+              {t('createArticle')}
+            </NavLink>
+          </div>
+        )
       ) : (
         <NavLink
           to="/login"

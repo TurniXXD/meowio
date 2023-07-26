@@ -17,6 +17,37 @@ username: not_that_smart@guy.dev
 password: St4y_sad
 ```
 
+## Playground
+
+- Example login mutation
+- Provide `X-API-KEY` header in HTTP HEADERS field, and QUERY VARIABLES in playground
+
+```gql
+mutation login($username: String!, $password: String!) {
+  login(
+    input: {username: $username, password: $password}    
+  ) {
+    access_token
+    expires_in
+    token_type
+  }
+}
+```
+
+- Provide `X-API-KEY` header in HTTP HEADERS
+
+```json
+{
+  "X-API-KEY": "5ebea593-44b3-4501-9623-5cfe5c94379f"
+}
+```
+
+- And QUERY VARIABLES
+
+```json
+{"username": "smart@guy.dev", "password": "B3H_appy"}
+```
+
 - I found some differences between the figma design and the github assignment. It is possible that I just misunderstood the assignemnt. I try to be the smartest but sometimmes I fail. Whenever there was a difference I preferred to use the solution in swagger as a source of truth.
 - This is the list of things I didn't understand, and I would be open to contemplating or discussing these things with someone:
   - There was email in login form in figma, but there is username in swagger

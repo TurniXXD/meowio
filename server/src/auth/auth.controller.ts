@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AccessTokenDto, LoginDto } from './dto/login-auth.dto';
-import { ApiKeyGuard, AuthGuard } from './auth.guard';
+import { ApiKeyGuard, TokenAuthGuard } from './auth.guard';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -47,7 +47,7 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenAuthGuard)
   @Post('logout')
   logout() {
     return this.authService.logout();

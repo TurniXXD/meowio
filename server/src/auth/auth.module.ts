@@ -12,6 +12,7 @@ import { TenantsModule } from '@tenants/tenants.module';
 import { Tenant } from '@tenants/entities/tenant.entity';
 import { MiddlewareModule } from '@middleware/middleware.module';
 import { MiddlewareService } from '@middleware/middleware.service';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [
@@ -33,6 +34,6 @@ import { MiddlewareService } from '@middleware/middleware.service';
     TypeOrmModule.forFeature([Tenant]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, MiddlewareService],
+  providers: [AuthService, JwtStrategy, MiddlewareService, AuthResolver],
 })
 export class AuthModule {}

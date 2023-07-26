@@ -4,50 +4,68 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
-import { Repository } from 'typeorm';
-import { Tenant } from '@tenants/entities/tenant.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { AuthGuard } from '@nestjs/passport';
+import { decode } from 'jsonwebtoken';
+import { AuthService, JwtPayload } from './auth.service';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { customHeaders } from '@utils/constants';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-  constructor(
-    @InjectRepository(Tenant)
-    private readonly tenantRepository: Repository<Tenant>,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const api_key = request.headers['x-api-key'];
+    const req = context.switchToHttp().getRequest();
+    const api_key = req.headers[customHeaders.xApiKey];
 
-    try {
-      const apiKeyValid = await this.tenantRepository.findOneBy({
-        api_key,
-      });
-
-      if (!api_key || !apiKeyValid || api_key !== apiKeyValid.api_key) {
-        throw new Error();
-      }
-    } catch (error) {
-      throw new UnauthorizedException('Invalid API key');
+    if (await this.authService.validateApiKey(api_key)) {
+      return true;
     }
 
-    return true;
+    throw new UnauthorizedException('Invalid API key');
   }
 }
 
 @Injectable()
-export class JwtAuthGuard extends PassportAuthGuard('jwt') {}
+export class GqlApiKeyGuard extends AuthGuard('custom') {
+  constructor(private readonly authService: AuthService) {
+    super();
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const ctx = GqlExecutionContext.create(context);
+    const { req } = ctx.getContext();
+    const api_key = req.headers[customHeaders.xApiKey];
+
+    if (api_key === '') {
+      return false;
+    }
+
+    return await this.authService.validateApiKey(api_key);
+  }
+}
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(
-    @InjectRepository(Tenant)
-    private readonly tenantRepository: Repository<Tenant>,
-  ) {}
+export class JwtAuthGuard extends AuthGuard('jwt') {}
+
+@Injectable()
+export class GqlJwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
+  constructor() {
+    super();
+  }
+
+  getRequest(context: ExecutionContext): any {
+    const gqlContext = GqlExecutionContext.create(context);
+    return gqlContext.getContext().req;
+  }
+}
+
+@Injectable()
+export class TokenAuthGuard implements CanActivate {
+  constructor(private readonly authService: AuthService) {}
 
   private jwtAuthGuard = new JwtAuthGuard();
-  private apiKeyGuard = new ApiKeyGuard(this.tenantRepository);
+  private apiKeyGuard = new ApiKeyGuard(this.authService);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
@@ -60,3 +78,24 @@ export class AuthGuard implements CanActivate {
     }
   }
 }
+
+@Injectable()
+export class OwnerTokenAuthGuard extends TokenAuthGuard {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (!(await super.canActivate(context))) {
+      // If the parent TokenAuthGuard denies access, return false.
+      return false;
+    }
+
+    const req = context.switchToHttp().getRequest();
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    const decodedToken = decode(token) as JwtPayload;
+    if (decodedToken?.owner) {
+      return true;
+    }
+
+    throw new UnauthorizedException();
+  }
+}
+
+// There should also be GqlTokenAuthGuard and GqlOwnerTokenAuthGuard, but I dind't have time to implement it, I would reuse the non GraphQL implementation but adjust it for context

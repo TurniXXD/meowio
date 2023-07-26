@@ -6,16 +6,10 @@ import { verifyPassword } from './auth.utils';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login-auth.dto';
 import { Tenant } from '@tenants/entities/tenant.entity';
-import { uid } from '@utils/index';
-
-export enum Role {
-  Owner = 'owner',
-  User = 'user',
-}
-
-export interface Payload {
+import { isValidUUID } from '@utils/index';
+export interface JwtPayload {
   sub: string;
-  role: Role;
+  owner?: boolean;
 }
 
 @Injectable()
@@ -45,10 +39,13 @@ export class AuthService {
     return user;
   }
 
-  async resolveRole(username: string, password: string): Promise<Role> {
+  async resolveHasOwnerPrivileges(
+    username: string,
+    password: string,
+  ): Promise<boolean> {
     const owner = await this.tenantRepository.findOneBy({ name: username });
     if (!owner) {
-      return Role.User;
+      return false;
     }
 
     // Verify password again in tenant table just to be sure
@@ -57,13 +54,18 @@ export class AuthService {
       throw new Error(`Error wrong admin password`);
     }
 
-    return Role.Owner;
+    return true;
   }
 
-  async generateToken(username: string, password: string): Promise<string> {
-    const payload: Payload = {
-      role: await this.resolveRole(username, password),
-      sub: uid(),
+  async generateToken(user: User, password: string): Promise<string> {
+    const hasOwnerPrivileges = await this.resolveHasOwnerPrivileges(
+      user.username,
+      password,
+    );
+
+    const payload: JwtPayload = {
+      ...(hasOwnerPrivileges && { owner: true }),
+      sub: user.id,
     };
 
     const signedToken = this.jwtService.sign(payload);
@@ -77,10 +79,25 @@ export class AuthService {
     }
 
     return {
-      access_token: await this.generateToken(username, password),
+      access_token: await this.generateToken(user, password),
       expires_in: this.tokenExpirationTime,
       token_type: 'bearer',
     };
+  }
+
+  async validateApiKey(api_key: string): Promise<boolean> {
+    if (!isValidUUID(api_key)) {
+      return false;
+    }
+
+    const apiKeyValid = await this.tenantRepository.findOneBy({
+      api_key,
+    });
+
+    if (!api_key || !apiKeyValid || api_key !== apiKeyValid.api_key) {
+      return false;
+    }
+    return true;
   }
 
   logout() {

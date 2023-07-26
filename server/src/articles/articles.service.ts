@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { Article } from './entities/article.entity';
 import { ArticleDto, ArticleDtoPreview } from './dto/articles.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { mapArticlesFromDBtoArticleDtoPreview } from './articles.utils';
+import {
+  mapArticleFromDBtoArticleDto,
+  mapArticlesFromDBtoArticleDtoPreview,
+} from './articles.utils';
+import { ArticleUpdateInput } from './articles.resolver';
 
 @Injectable()
 export class ArticlesService {
@@ -57,8 +60,12 @@ export class ArticlesService {
     };
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`;
+  async update(input: ArticleUpdateInput) {
+    const { id, ...rest } = input;
+    await this.articlesRepository.update(id, rest);
+    const updatedArticle = await this.articlesRepository.findOneBy({ id });
+
+    return mapArticleFromDBtoArticleDto(updatedArticle);
   }
 
   remove(id: number) {

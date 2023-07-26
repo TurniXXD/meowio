@@ -16,3 +16,7 @@ export const swagger = {
     forbidden: { status: 403, description: 'Forbidden' },
   },
 };
+
+export const customHeaders = {
+  xApiKey: 'x-api-key',
+};

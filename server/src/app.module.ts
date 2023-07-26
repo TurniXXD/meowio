@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { ImagesModule } from './images/images.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -23,6 +25,16 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     TenantsModule,
     UsersModule,
     ImagesModule,
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useFactory: async (configService: ConfigService) => ({
+        autoSchemaFile: 'schema/schema.graphql',
+        playground: configService.get('NODE_ENV') === 'dev',
+        debug: configService.get('NODE_ENV') === 'dev',
+        context: ({ req }) => ({ req }),
+      }),
+      inject: [ConfigService],
+    }),
     // In production app I would most likely use third party storage like cloudinary or digital ocean space, but I didn't want to include my API secrets in this project
     ServeStaticModule.forRoot({
       rootPath: join(

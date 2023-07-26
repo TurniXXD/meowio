@@ -11,7 +11,7 @@ import {
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { AuthGuard } from '@auth/auth.guard';
+import { TokenAuthGuard, OwnerTokenAuthGuard } from '@auth/auth.guard';
 import { MiddlewareService } from '@middleware/middleware.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { swagger } from '@utils/constants';
@@ -33,7 +33,7 @@ export class ArticlesController {
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
   @ApiResponse(swagger.apiResponses.requiredBodyParams)
-  @UseGuards(AuthGuard)
+  @UseGuards(OwnerTokenAuthGuard)
   @Post()
   async create(
     @Body() createArticleDto: CreateArticleDto,
@@ -50,7 +50,7 @@ export class ArticlesController {
   })
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenAuthGuard)
   @Get()
   findAll(): Promise<Array<ArticleDtoPreview>> {
     return this.articlesService.findAll();
@@ -64,7 +64,7 @@ export class ArticlesController {
   })
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenAuthGuard)
   @Get(':id')
   findOne(@Param('id') id?: string): Promise<ArticleDto> {
     return this.articlesService.findOne(id);
@@ -73,17 +73,17 @@ export class ArticlesController {
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
   @ApiResponse(swagger.apiResponses.requiredBodyParams)
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
     this.middlewareService.resolveRequiredParams(id);
-    return this.articlesService.update(+id, updateArticleDto);
+    return this.articlesService.update({ id, ...updateArticleDto });
   }
 
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
   @ApiResponse(swagger.apiResponses.requiredBodyParams)
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     this.middlewareService.resolveRequiredParams(id);
