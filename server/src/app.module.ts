@@ -9,16 +9,13 @@ import { TenantsModule } from './tenants/tenants.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ImagesModule } from './images/images.module';
-import { MulterModule } from '@nestjs/platform-express';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     // Keep this first so that other imports have access to config
     ConfigModule.forRoot({ isGlobal: true }),
-    // In production app I would most likely use third party storage like cloudinary or digital ocean space, but I didn't want to include my API secrets in this project
-    // MulterModule.register({
-    //   dest: './uploads', // Destination folder for storing uploaded images
-    // }),
     AuthModule,
     DatabaseModule,
     ArticlesModule,
@@ -26,6 +23,15 @@ import { MulterModule } from '@nestjs/platform-express';
     TenantsModule,
     UsersModule,
     ImagesModule,
+    // In production app I would most likely use third party storage like cloudinary or digital ocean space, but I didn't want to include my API secrets in this project
+    ServeStaticModule.forRoot({
+      rootPath: join(
+        __dirname,
+        '..',
+        process.env.IMAGE_UPLOAD_PATH || 'images',
+      ),
+      serveRoot: '/images',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

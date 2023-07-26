@@ -68,7 +68,6 @@ const CreateArticleForm = () => {
         type: PopupType.Error,
         text: 'Something went wrong',
       });
-      console.log(e);
     }
   };
 

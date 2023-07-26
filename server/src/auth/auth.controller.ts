@@ -43,7 +43,6 @@ export class AuthController {
   @UseGuards(ApiKeyGuard)
   @Post('login')
   login(@Body() loginDto: LoginDto): any {
-    console.log({ loginDto });
     this.middlewareService.resolveRequiredParams(loginDto);
     return this.authService.login(loginDto);
   }

@@ -117,9 +117,9 @@ export class GlobalService {
     });
   }
   /**
-   * List of all articles
+   * Get all articles
    */
-  static articles1(options: IRequestOptions = {}): Promise<any> {
+  static articles1(options: IRequestOptions = {}): Promise<ArticleDtoPreview[]> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/articles';
 
@@ -212,7 +212,7 @@ export class TenantsService {
 
 export class ArticlesService {
   /**
-   *
+   * Get an article by ID
    */
   static articles(
     params: {
@@ -220,7 +220,7 @@ export class ArticlesService {
       id: string;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<any> {
+  ): Promise<ArticleDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/articles/{id}';
       url = url.replace('{id}', params['id'] + '');
@@ -374,8 +374,28 @@ export interface ArticleDto {
   /**  */
   perex?: string;
 
+  /** The unique identifier of the article image, actual image hosted on third party */
+  imageId?: string;
+
+  /**  */
+  createdAt?: Date;
+
+  /**  */
+  lastUpdatedAt?: Date;
+
   /**  */
   content?: string;
+}
+
+export interface ArticleDtoPreview {
+  /**  */
+  articleId?: string;
+
+  /**  */
+  title?: string;
+
+  /**  */
+  perex?: string;
 
   /** The unique identifier of the article image, actual image hosted on third party */
   imageId?: string;

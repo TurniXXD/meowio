@@ -9,7 +9,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log({ cookie });
     if (cookie) {
       navigate('/articles');
     }

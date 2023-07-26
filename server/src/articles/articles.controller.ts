@@ -15,7 +15,7 @@ import { AuthGuard } from '@auth/auth.guard';
 import { MiddlewareService } from '@middleware/middleware.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { swagger } from '@utils/constants';
-import { ArticleDto } from './dto/articles.dto';
+import { ArticleDto, ArticleDtoPreview } from './dto/articles.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -42,23 +42,32 @@ export class ArticlesController {
     return await this.articlesService.create(createArticleDto);
   }
 
-  @ApiOperation({ summary: 'List of all articles' })
+  @ApiOperation({ summary: 'Get all articles' })
+  @ApiResponse({
+    status: 200,
+    description: 'Article list',
+    type: [ArticleDtoPreview],
+  })
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
+  findAll(): Promise<Array<ArticleDtoPreview>> {
     return this.articlesService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get an article by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Article list',
+    type: ArticleDto,
+  })
   @ApiResponse(swagger.apiResponses.unathorized)
   @ApiResponse(swagger.apiResponses.forbidden)
-  @ApiResponse(swagger.apiResponses.requiredBodyParams)
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    this.middlewareService.resolveRequiredParams(id);
-    return this.articlesService.findOne(+id);
+  findOne(@Param('id') id?: string): Promise<ArticleDto> {
+    return this.articlesService.findOne(id);
   }
 
   @ApiResponse(swagger.apiResponses.unathorized)

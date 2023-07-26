@@ -25,8 +25,6 @@ export class ApiKeyGuard implements CanActivate {
         api_key,
       });
 
-      console.log({ apiKeyValid, api_key });
-
       if (!api_key || !apiKeyValid || api_key !== apiKeyValid.api_key) {
         throw new Error();
       }

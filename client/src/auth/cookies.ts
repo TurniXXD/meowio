@@ -33,7 +33,6 @@ export const useCookie = (
   });
 
   const setValue = (newValue: string | {}, options?: any) => {
-    console.log({ newValue, options });
     try {
       if (newValue === '') {
         Cookies.remove(keyName);

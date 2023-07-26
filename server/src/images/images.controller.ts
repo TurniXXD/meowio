@@ -9,7 +9,6 @@ import {
   UploadedFile,
   ParseFilePipe,
   FileTypeValidator,
-  Injectable,
 } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { AuthGuard } from '@auth/auth.guard';
@@ -21,7 +20,6 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { uid } from '@utils/index';
 
-@Injectable()
 @Controller('images')
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
@@ -54,7 +52,7 @@ export class ImagesController {
     FileInterceptor('image', {
       storage: diskStorage({
         destination: (_, __, callback) => {
-          const uploadPath = process.env.IMAGE_UPLOAD_PATH || './uploads';
+          const uploadPath = `./${process.env.IMAGE_UPLOAD_PATH}` || './images';
           callback(null, uploadPath);
         },
         filename: (_, file, callback) => {
@@ -65,7 +63,7 @@ export class ImagesController {
     }),
   )
   create(
-    // Validate that the file is an image
+    // Validate that the file is png
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: '.(png)' })],
@@ -77,12 +75,6 @@ export class ImagesController {
       imageId: file.filename.split('.png')[0],
       name: file.originalname,
     };
-  }
-
-  @UseGuards(AuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imagesService.findOne(+id);
   }
 
   @UseGuards(AuthGuard)

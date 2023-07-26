@@ -1,28 +1,25 @@
 import { useTranslation } from 'react-i18next';
-
-const articles = [
-  {
-    title: 'article 1',
-  },
-  {
-    title: 'article 2',
-  },
-  {
-    title: 'article 3',
-  },
-  {
-    title: 'article 4',
-  },
-];
+import { ArticleDtoPreview, GlobalService } from '../api';
+import { useEffect, useState } from 'react';
+import Article from '../components/Article';
 
 const Articles = () => {
-  const { t } = useTranslation(['common', 'articles']);
+  const { t } = useTranslation('common');
+  const [articles, setArticles] = useState<Array<ArticleDtoPreview>>([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const result = await GlobalService.articles1();
+      setArticles(result);
+    };
+    fetchArticles();
+  }, []);
 
   return (
     <div>
       <h1>{t('recentArticles')}</h1>
       {articles.map((article, i) => (
-        <div key={i}>{article.title}</div>
+        <Article key={i} props={article} />
       ))}
     </div>
   );
