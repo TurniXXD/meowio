@@ -6,12 +6,24 @@ export interface ITextField {
   placeholder?: string;
   password?: boolean;
   email?: boolean;
+  className?: string;
+  textArea?: boolean;
 }
 
 export default function TextField(props: ITextField) {
+  if (props?.textArea) {
+    return (
+      <textarea
+        className={`${styles.textField} ${props?.className || ''}`}
+        {...props.fieldProps}
+        {...(props.placeholder && { placeholder: props.placeholder })}
+      />
+    );
+  }
+
   return (
     <input
-      className={styles.textField}
+      className={`${styles.textField} ${props?.className || ''}`}
       {...props.fieldProps}
       {...(props.placeholder && { placeholder: props.placeholder })}
       type={

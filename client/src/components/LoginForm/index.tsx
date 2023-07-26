@@ -19,7 +19,6 @@ const LoginForm = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any) => {

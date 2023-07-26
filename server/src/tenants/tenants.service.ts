@@ -26,6 +26,7 @@ export class TenantsService {
     const user = new User({
       username: createTenantDtoRest.name,
       password: passwordHash,
+      // I originally wanted to choose a random avatar for user, that he can later change, from 5 already existing avatars on third party storage. I would have these avatars in separate path from other images.
       avatar_id: getRandomAvatar(),
     });
     const userCreated = await this.entityManager.save(user);
@@ -45,10 +46,6 @@ export class TenantsService {
       createdAt: tenantCreated.created_at,
       lastUsedAt: tenantCreated.updated_at,
     };
-  }
-
-  findAll() {
-    return `This action returns tenants`;
   }
 
   findOne(id: number) {

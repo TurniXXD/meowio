@@ -3,6 +3,14 @@
 - Multitenancy blogging engine allows multiple tenants to use the same backend and deploy their own blog
 - Tenant first sends request for creation to backend with credentials. Tenant is also given single owner user, that he can use to access his blog with management privileges. His user is not given a role, that would require column with same records for all users except one, but his ownership is checked by verifying same ceredentials for tenant and user on login request.
 
+## Setup
+
+- Copy or rename the `.env.example` files in client and server
+- Start DB container `docker-compose up -d`
+- Install packages `pnpm i`
+- Run the client and the server concurrently in watch mode `pnpm start`
+- Server will automatically create database schema, run seed after it is initialized `cd server && pnpm db:seed`
+
 - To sign in as owner use these credentials
 
 ``` txt
@@ -20,7 +28,6 @@ password: St4y_sad
 ## Playground
 
 - Example login mutation
-- Provide `X-API-KEY` header in HTTP HEADERS field, and QUERY VARIABLES in playground
 
 ```gql
 mutation login($username: String!, $password: String!) {
@@ -55,6 +62,9 @@ mutation login($username: String!, $password: String!) {
   - Maybe it is just a design thing, but it was strange to me, that even though it is single user blog there was author specified in every article
   - There was __log in__ button on articles route in figma, but this route is protected in swagger, so I assumed that user can't view articles without signing in
 
+- I really don't like to rush things, and I want to be sure about what I am doing. I was hoping that I could do more, but I didn't have the time.
+- I believe that this project shows some of my abilities, and I am excited about your code review
+
 ## Project roadmap
 
 1. Visualize project in whimsical
@@ -72,3 +82,7 @@ mutation login($username: String!, $password: String!) {
 13. Image upload
 14. Create article
 15. Get all articles
+16. Show single article details
+17. Update auth setup to allow for separate handeling of user and owner
+18. Add GraphQL usage example, ability to update or remove articles from playground
+19. Seed DB script and mock data

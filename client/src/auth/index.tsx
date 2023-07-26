@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
+import { ReactNode, createContext, useContext, useMemo } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { EnumCookies, useCookie } from './cookies';
 import { GlobalService, LoginDto } from '../api';

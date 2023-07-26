@@ -17,7 +17,7 @@ const CreateArticleForm = () => {
     type: PopupType;
     text: string;
   } | null>(null);
-  // Hook in parant for the ability to set the badge to null
+  // Hook in parent for the ability to set the badge to null
   const [selectedFileBadge, setSelectedFileBadge] = useState<File | null>(null);
 
   const {
@@ -26,7 +26,6 @@ const CreateArticleForm = () => {
     control,
     setValue,
     reset,
-    formState: { errors },
   } = useForm();
 
   const onSubmit = async (data: any) => {
@@ -101,8 +100,6 @@ const CreateArticleForm = () => {
                 />
               )}
             />
-            {errors && <>{errors.root?.message}</>}
-            {/* {errors.email && <span>{errors.email.message}</span>} */}
           </div>
 
           <div>
@@ -122,7 +119,6 @@ const CreateArticleForm = () => {
               type={ButtonType.Upload}
               children={tCommon('uploadImage')}
             />
-            {/* {errors.password && <span>{errors.password.message}</span>} */}
           </div>
 
           <div>
@@ -140,12 +136,6 @@ const CreateArticleForm = () => {
                 />
               )}
             />
-            {/* {errors  const handleFileClear = () => {
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };.password && <span>{errors.password.message}</span>} */}
           </div>
 
           <div>
@@ -156,14 +146,16 @@ const CreateArticleForm = () => {
               rules={{
                 required: t('validations.contentRequired'),
               }}
+              defaultValue=""
               render={({ field }) => (
                 <TextField
                   fieldProps={field}
                   placeholder={t('placeholders.content')}
+                  className={styles.content}
+                  textArea
                 />
               )}
             />
-            {/* {errors.password && <span>{errors.password.message}</span>} */}
           </div>
         </form>
       </div>
