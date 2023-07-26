@@ -1,10 +1,19 @@
-$bg: #FFFFFF;
-$bgGray: #F8F9FA;
+$white: #ffffff;
+$gray: #6c757d;
+$lightGray: #dfdfdf;
+$blue: #007bff;
+$danger: #dc3545;
+$success: #28a745;
+$warning: #ffc107;
+$info: #17a2b8;
+
+$bg: $white;
+$bgGray: #f8f9fa;
+$bgDark: #343a40;
+$bgSuccess: #d4edda;
+$bgError: #f8d7da;
 $text: #212529;
-$textSecondary: #6C757D;
-$gray: #6C757D;
-$blue: #007BFF;
-$red: #DC3545;
+$textSecondary: $gray;
 
 $sm: 640px;
 $md: 768px;

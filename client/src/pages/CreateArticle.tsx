@@ -1,11 +1,9 @@
-import { useTranslation } from 'react-i18next';
+import CreateArticleForm from '../components/CreateArticleForm';
 
 const CreateArticle = () => {
-  const { t } = useTranslation('articles');
-
   return (
     <div>
-      <h1>{t('createNewArticle')}</h1>
+      <CreateArticleForm />
     </div>
   );
 };

@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateArticleDto {
+export class ArticleDto {
+  @ApiProperty({
+    example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  })
+  articleId: string;
+
   @ApiProperty({
     example: 'Lorem Ipsum',
   })
@@ -24,4 +29,14 @@ export class CreateArticleDto {
     example: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
   })
   imageId: string;
+
+  @ApiProperty({
+    example: '2023-07-25T12:53:27.328Z',
+  })
+  createdAt: Date;
+
+  @ApiProperty({
+    example: '2023-07-25T12:53:27.328Z',
+  })
+  lastUpdatedAt: Date;
 }

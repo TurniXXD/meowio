@@ -1,0 +1,24 @@
+@use '../../styles/variables' as *;
+
+.mainWrapper {
+  label {
+    font-size: 14px;
+    margin-bottom: 0.2rem;
+  }
+  form {
+    div {
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header * {
+  display: flex !important;
+}

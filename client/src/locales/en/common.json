@@ -7,7 +7,17 @@
   "email": "Email",
   "password": "Password",
   "uploadImage": "Upload an Image",
+  "featuredImage": "Featured image",
   "uploadNew": "Upload new",
   "delete": "Delete",
-  "edit": "Edit"
+  "edit": "Edit",
+  "emailPlaceholder": "me@example.com",
+  "passwordPlaceholder": "**********",
+  "validations": {
+    "emailAlreadyExists": "Email already exists",
+    "emailInvalid": "Invalid email address",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "imageRequired": "Image is required"
+  }
 }

@@ -9,6 +9,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { MiddlewareService } from '@middleware/middleware.service';
+import { swagger } from '@utils/constants';
 
 @Controller()
 export class AuthController {
@@ -38,18 +39,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Required body params missing',
-    content: {
-      'application/json': {
-        example: {
-          code: 'REQUIRED_PARAMS_MISSING',
-          message: 'Required body params missing',
-        },
-      },
-    },
-  })
+  @ApiResponse(swagger.apiResponses.requiredBodyParams)
   @UseGuards(ApiKeyGuard)
   @Post('login')
   login(@Body() loginDto: LoginDto): any {

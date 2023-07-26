@@ -3,7 +3,6 @@ import { initReactI18next } from 'react-i18next';
 import common from './locales/en/common.json';
 import articles from './locales/en/articles.json';
 import about from './locales/en/about.json';
-import login from './locales/en/login.json';
 
 i18n
   .use(initReactI18next)
@@ -17,7 +16,6 @@ i18n
         common,
         articles,
         about,
-        login,
       },
     },
   });

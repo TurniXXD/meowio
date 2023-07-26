@@ -95,7 +95,7 @@ export class GlobalService {
     });
   }
   /**
-   *
+   * Create an article
    */
   static articles(
     params: {
@@ -103,7 +103,7 @@ export class GlobalService {
       body?: CreateArticleDto;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<any> {
+  ): Promise<ArticleDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/articles';
 
@@ -117,7 +117,7 @@ export class GlobalService {
     });
   }
   /**
-   *
+   * List of all articles
    */
   static articles1(options: IRequestOptions = {}): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -157,17 +157,27 @@ export class GlobalService {
    */
   static images(
     params: {
-      /** requestBody */
-      body?: CreateImageDto;
+      /**  */
+      image: any;
     } = {} as any,
     options: IRequestOptions = {}
-  ): Promise<any> {
+  ): Promise<UploadImageDto> {
     return new Promise((resolve, reject) => {
       let url = basePath + '/images';
 
-      const configs: IRequestConfig = getConfigs('post', 'application/json', url, options);
+      const configs: IRequestConfig = getConfigs('post', 'multipart/form-data', url, options);
 
-      let data = params.body;
+      let data = null;
+      data = new FormData();
+      if (params['image']) {
+        if (Object.prototype.toString.call(params['image']) === '[object Array]') {
+          for (const item of params['image']) {
+            data.append('image', item as any);
+          }
+        } else {
+          data.append('image', params['image'] as any);
+        }
+      }
 
       configs.data = data;
 
@@ -340,10 +350,51 @@ export interface AccessTokenDto {
 
 export interface CreateTenantDto {}
 
-export interface CreateArticleDto {}
+export interface CreateArticleDto {
+  /**  */
+  title?: string;
+
+  /**  */
+  perex?: string;
+
+  /**  */
+  content?: string;
+
+  /** The unique identifier of the article image, actual image hosted on third party */
+  imageId?: string;
+}
+
+export interface ArticleDto {
+  /**  */
+  articleId?: string;
+
+  /**  */
+  title?: string;
+
+  /**  */
+  perex?: string;
+
+  /**  */
+  content?: string;
+
+  /** The unique identifier of the article image, actual image hosted on third party */
+  imageId?: string;
+
+  /**  */
+  createdAt?: Date;
+
+  /**  */
+  lastUpdatedAt?: Date;
+}
 
 export interface UpdateArticleDto {}
 
 export interface CreateCommentDto {}
 
-export interface CreateImageDto {}
+export interface UploadImageDto {
+  /**  */
+  imageId?: string;
+
+  /**  */
+  name?: string;
+}

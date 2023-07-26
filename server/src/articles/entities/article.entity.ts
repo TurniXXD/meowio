@@ -17,4 +17,9 @@ export class Article extends BaseEntity {
 
   @Column()
   content: string;
+
+  constructor(item: Partial<Article>) {
+    super();
+    Object.assign(this, item);
+  }
 }

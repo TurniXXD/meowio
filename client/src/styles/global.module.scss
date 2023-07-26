@@ -12,6 +12,12 @@
   flex-direction: row;
 }
 
+.justifyCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .col {
   display: flex;
   flex-direction: column;

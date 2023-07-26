@@ -1,9 +1,4 @@
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useMemo,
-} from 'react';
+import { ReactNode, createContext, useContext, useMemo } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { EnumCookies, useCookie } from './cookies';
 import { GlobalService, LoginDto } from '../api';
@@ -29,7 +24,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const res = await GlobalService.login({
       body: data,
     });
-
     if (!res?.access_token || !res?.expires_in || !res?.token_type) {
       throw new Error('login failed');
     }

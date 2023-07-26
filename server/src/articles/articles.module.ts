@@ -5,14 +5,17 @@ import { Article } from './entities/article.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@auth/auth.module';
 import { Tenant } from '@tenants/entities/tenant.entity';
+import { MiddlewareModule } from '@middleware/middleware.module';
+import { MiddlewareService } from '@middleware/middleware.service';
 
 @Module({
   imports: [
     AuthModule,
+    MiddlewareModule,
     TypeOrmModule.forFeature([Article]),
     TypeOrmModule.forFeature([Tenant]),
   ],
   controllers: [ArticlesController],
-  providers: [ArticlesService],
+  providers: [ArticlesService, MiddlewareService],
 })
 export class ArticlesModule {}

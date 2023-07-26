@@ -9,11 +9,16 @@ import { TenantsModule } from './tenants/tenants.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ImagesModule } from './images/images.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
     // Keep this first so that other imports have access to config
     ConfigModule.forRoot({ isGlobal: true }),
+    // In production app I would most likely use third party storage like cloudinary or digital ocean space, but I didn't want to include my API secrets in this project
+    // MulterModule.register({
+    //   dest: './uploads', // Destination folder for storing uploaded images
+    // }),
     AuthModule,
     DatabaseModule,
     ArticlesModule,

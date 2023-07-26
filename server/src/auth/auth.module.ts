@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '@users/users.module';
 import { User } from '@users/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -34,6 +33,6 @@ import { MiddlewareService } from '@middleware/middleware.service';
     TypeOrmModule.forFeature([Tenant]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, MiddlewareService],
+  providers: [AuthService, JwtStrategy, MiddlewareService],
 })
 export class AuthModule {}

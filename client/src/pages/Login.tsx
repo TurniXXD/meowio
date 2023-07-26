@@ -1,13 +1,24 @@
-import { useTranslation } from 'react-i18next';
 import LoginForm from '../components/LoginForm';
+import { EnumCookies, useCookie } from '../auth/cookies';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import globalStyles from '../styles/global.module.scss'
 
 const Login = () => {
-  const { t } = useTranslation(['common']);
+  const [cookie] = useCookie(EnumCookies.Auth);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log({ cookie });
+    if (cookie) {
+      navigate('/articles');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   return (
-    <div>
-      <h1>{t('login')}</h1>
-      <LoginForm t={t} />
+    <div className={globalStyles.justifyCenter}>
+      <LoginForm />
     </div>
   );
 };
