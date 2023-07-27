@@ -10,12 +10,12 @@ import EditArticle from './pages/EditArticle';
 import Article from './pages/Article';
 import Nav from './components/Nav';
 import { ProtectedRoute } from './auth';
-import { initAxiosInstance } from './api/config'
+import { initAxiosInstance } from './api/config';
 import { EnumCookies, useCookie } from './auth/cookies';
 
 const App = () => {
   const [authCookie] = useCookie(EnumCookies.Auth, '');
-  initAxiosInstance(authCookie && authCookie)
+  initAxiosInstance(authCookie && authCookie);
 
   return (
     <>

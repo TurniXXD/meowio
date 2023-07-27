@@ -5,13 +5,13 @@ import styles from './article.module.scss';
 import globalStyles from '../../styles/global.module.scss';
 import { useTranslation } from 'react-i18next';
 
-const Article = ({ props, key }: { props: ArticleDtoPreview; key: number }) => {
+const Article = ({ props }: { props: ArticleDtoPreview }) => {
   const { articleId, perex, title, imageId, createdAt, lastUpdatedAt } = props;
   const { t } = useTranslation('articles');
 
   if (articleId && perex && title && imageId && createdAt && lastUpdatedAt) {
     return (
-      <div key={key} className={styles.articlePreview}>
+      <div className={styles.articlePreview}>
         <div className={styles.imageCol}>
           <img src={resolveImageUrl(imageId)} alt={imageId} />
         </div>

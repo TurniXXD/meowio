@@ -30,7 +30,9 @@ const Article = ({ props }: { props: ArticleDto }) => {
           Elisabeth Strain •{' '}
           <span className={styles.date}>{formatDate(createdAt)}</span>
         </div>
-        <img src={resolveImageUrl(imageId)} alt={imageId} />
+        <div className={styles.imageWrapper}>
+          <img src={resolveImageUrl(imageId)} alt={imageId} />
+        </div>
         <div className={styles.content}>
           <MarkdownResolver text={content} />
         </div>
