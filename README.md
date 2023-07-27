@@ -45,7 +45,7 @@ mutation login($username: String!, $password: String!) {
 
 ```json
 {
-  "X-API-KEY": "5ebea593-44b3-4501-9623-5cfe5c94379f"
+  "X-API-KEY": "af36f597-2455-42b2-96c6-c120ce3953a7"
 }
 ```
 
